@@ -25,7 +25,7 @@ fn load_sketchybar(icon: &Option<char>) {
         "pomo",
         &format!("icon={}", icon.unwrap_or('󰚭')).to_string(),
         "update_freq=1",
-        "script=$(pomo sketchybar update)",
+        "script=pomo sketchybar update",
         "click_script=sketchybar --set pomo popup.drawing=toggle",
         "popup.blur_radius=50",
         "popup.align=center",
@@ -37,8 +37,8 @@ fn load_sketchybar(icon: &Option<char>) {
     ];
     let status = Command::new("sketchybar")
         .args(command)
-        .args(popup("Reset", "pomo start"))
-        .args(popup("Close", "pomo sketchybar unload"))
+        .args(popup("Start", "pomo start"))
+        .args(popup("Stop", "pomo sketchybar unload"))
         .status();
     println!("{:#?}", status);
 }
