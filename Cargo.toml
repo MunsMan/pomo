@@ -1,0 +1,16 @@
+[package]
+name = "pomo"
+version = "0.1.0"
+edition = "2021"
+authors = ["MunsMan"]
+description = "Simple Pomodoro CLI Timer"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+clap = { version = "4.4.6", features = ["derive"] }
+bincode = { version = "2.0.0-rc", features = ["serde"] }
+
+[features]
+default = []
+sketchybar = []
