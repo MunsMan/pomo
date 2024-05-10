@@ -40,4 +40,6 @@ pub(crate) enum SketchybarCommand {
     Load { icon: Option<char> },
     Unload,
     Update,
+    Show,
+    Hide,
 }

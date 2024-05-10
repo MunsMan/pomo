@@ -11,6 +11,8 @@ pub(crate) fn sketchybar_handler(command: &SketchybarCommand, state: &mut State)
         SketchybarCommand::Load { icon } => load_sketchybar(icon),
         SketchybarCommand::Unload => unload_sketchybar(state),
         SketchybarCommand::Update => update_sketchybar(state),
+        SketchybarCommand::Show => draw(),
+        SketchybarCommand::Hide => hide(),
     }
 }
 
@@ -25,6 +27,7 @@ fn load_sketchybar(icon: &Option<char>) {
         "pomo",
         &format!("icon={}", icon.unwrap_or('󰚭')).to_string(),
         "update_freq=1",
+        "updates=when_shown",
         "script=pomo sketchybar update",
         "click_script=sketchybar --set pomo popup.drawing=toggle",
         "popup.blur_radius=50",
@@ -38,7 +41,7 @@ fn load_sketchybar(icon: &Option<char>) {
     let status = Command::new("sketchybar")
         .args(command)
         .args(popup("Start", "pomo start"))
-        .args(popup("Stop", "pomo sketchybar unload"))
+        .args(popup("Stop", "pomo sketchybar hide"))
         .status();
     println!("{:#?}", status);
 }
@@ -58,6 +61,20 @@ fn popup(name: &str, function: &str) -> [String; 8] {
     .map(|x| x.to_string())
 }
 
+fn draw() {
+    let status = Command::new("sketchybar")
+        .args(["--set", "pomo", "drawing=on"])
+        .status();
+    println!("{:#?}", status);
+}
+
+fn hide() {
+    let status = Command::new("sketchybar")
+        .args(["--set", "pomo", "drawing=false"])
+        .status();
+    println!("{:#?}", status);
+}
+
 fn unload_sketchybar(state: &mut State) {
     state.reset();
     let status = Command::new("sketchybar")
@@ -72,5 +89,3 @@ fn update_sketchybar(state: &State) {
         .args(["--set", "pomo", &format!("label={}", time).to_string()])
         .status();
 }
-
-fn click_sketchybar() {}
