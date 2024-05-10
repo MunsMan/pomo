@@ -71,7 +71,7 @@ fn draw() {
 
 fn hide() {
     let status = Command::new("sketchybar")
-        .args(["--set", "pomo", "drawing=false"])
+        .args(["--set", "pomo", "drawing=false", "popup.drawing=toggle"])
         .status();
     println!("{:#?}", status);
 }

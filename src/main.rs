@@ -57,16 +57,20 @@ enum CurrentStates {
 
 fn current_pomo_state(mut duration: Duration, state: &State) -> CurrentStates {
     loop {
-        for _i in 1..=state.work_box {
+        for _i in 1..state.work_blocks {
             duration = match duration.checked_sub(state.work_duration) {
                 Some(duration) => duration,
                 None => return CurrentStates::Work { duration },
             };
-            duration = match duration.checked_sub(state.work_duration) {
+            duration = match duration.checked_sub(state.break_short) {
                 Some(duration) => duration,
                 None => return CurrentStates::ShortBreak { duration },
             };
         }
+        duration = match duration.checked_sub(state.work_duration) {
+            Some(duration) => duration,
+            None => return CurrentStates::ShortBreak { duration },
+        };
         duration = match duration.checked_sub(state.break_long) {
             Some(duration) => duration,
             None => return CurrentStates::LongBreak { duration },
@@ -112,7 +116,7 @@ struct State {
     work_duration: Duration,
     break_short: Duration,
     break_long: Duration,
-    work_box: u8,
+    work_blocks: u8,
     running: bool,
     start: u64,
 }
@@ -123,7 +127,7 @@ impl Default for State {
             work_duration: minutes!(25),
             break_short: minutes!(5),
             break_long: minutes!(30),
-            work_box: 5,
+            work_blocks: 3,
             running: false,
             start: 0,
         }
@@ -136,7 +140,7 @@ impl State {
         self.work_duration = minutes!(25);
         self.break_short = minutes!(5);
         self.break_long = minutes!(30);
-        self.work_box = 5;
+        self.work_blocks = 5;
         self.running = false;
     }
 }
