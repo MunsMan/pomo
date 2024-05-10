@@ -30,6 +30,7 @@ fn load_sketchybar(icon: &Option<char>) {
         "updates=when_shown",
         "script=pomo sketchybar update",
         "click_script=sketchybar --set pomo popup.drawing=toggle",
+        "label.align=left",
         "popup.blur_radius=50",
         "popup.align=center",
         "popup.horizontal=true",
